@@ -7,4 +7,3 @@ Dependencies
 ------------
 
 - pygame
-- mpd client (python-mpd2)

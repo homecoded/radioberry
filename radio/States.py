@@ -1,7 +1,10 @@
 import TextRenderer
 import datetime
+import time
 import pygame
 import os
+import UserInterface
+import InetConnection
 
 #init gfx
 image_background = False
@@ -17,26 +20,40 @@ def get_date():
 
 
 class StateIdle:
+
+    CONNECTION_CHECK_INTERVAL = 5
+
     def __init__(self):
         print('State Idle')
+        #self.settings_button = UserInterface.Button()
+        self.time_lastcheck = time.time()
+        self.inet_connection = InetConnection.InetConnection()
+
+    def check_internet_connection(self):
+        time_elapsed = time.time() - self.time_lastcheck
+        if time_elapsed > self.CONNECTION_CHECK_INTERVAL:
+            print('Test for connection')
+            self.time_lastcheck = time.time()
+            self.inet_connection.check()
 
     def update(self, surface):
         global image_off
         surface.blit(image_off, (0, 0))
         TextRenderer.render(get_date(), 160, 140, TextRenderer.FONT_SMALL, surface, TextRenderer.CENTER_X)
         TextRenderer.render(get_time(), 160, 160, TextRenderer.FONT_BIG, surface, TextRenderer.CENTER_X)
+        self.check_internet_connection()
+        #self.settings_button.render(surface)
 
 
 class StateRunning:
     def __init__(self):
-        print('State Idle')
+        print('State Running')
 
     def update(self, surface):
         global image_background
         surface.blit(image_background, (0, 0))
         TextRenderer.render(get_time() + ' ' + get_date(), 160, 220, TextRenderer.FONT_SMALL, surface, TextRenderer.CENTER_X)
         TextRenderer.render('Radio RSA Sachsen', 160, 20, TextRenderer.FONT_SMALL, surface, TextRenderer.CENTER_X)
-
 
 def init():
     global image_background

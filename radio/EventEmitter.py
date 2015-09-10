@@ -7,7 +7,7 @@ class EventEmitter:
             self.observers[event_name] = []
         self.observers[event_name].append(observer)
 
-    def emit(self, event_name):
+    def emit(self, event_name, payload = False):
         if event_name in self.observers:
             for observer in self.observers[event_name]:
-                observer()
+                observer(payload)

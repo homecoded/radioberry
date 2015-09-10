@@ -27,8 +27,9 @@ pygame.mouse.set_visible(0)
 # init radio player
 internet_radio_player = InternetRadioPlayer.InternetRadioPlayer()
 
-def on_click():
+def on_click(position):
     global isActive
+    print(position)
     if isActive:
         isActive = False
         internet_radio_player.stop()
